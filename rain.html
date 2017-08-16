@@ -1,0 +1,30 @@
+<!DOCTYPE html> 
+<html> 
+<body id="lion"> 
+<p id= "cat"> I am the best </p>
+<video id="dog"  poster = "C:\Users\pvn kartik\Desktop\BOOKS\C\rain.gif" width="1000" hieght="1000" onclick="response()">
+  <source src="C:\Users\pvn kartik\Desktop\temp\Fantastic Beasts and Where to Find Them - Final Trailer [HD].mov" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML5 video.
+</video>
+<script>
+sessionStorage.setItem('key', "red");
+ 
+function response() {
+var elem=document.getElementById("dog");
+if(sessionStorage.getItem('key')=="green")
+   {
+       elem.webkitExitFullscreen();
+       elem.load(); 
+   }
+     if (sessionStorage.getItem('key')=="red")
+     {          elem.webkitRequestFullScreen();   
+    elem.play();
+    sessionStorage.setItem('key', "green");
+
+    } 
+}
+
+</script>
+</body> 
+</html>  
