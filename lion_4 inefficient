@@ -1,0 +1,4978 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+<meta name="viewport" content="width = 1050, user-scalable = yes" />
+<script type="text/javascript" src="extras/jquery.min.1.7.js"></script>
+<script type="text/javascript" src="extras/modernizr.2.5.3.min.js"></script>
+
+<style>
+body {
+cursor: url(cursor/wand.png), pointer;
+}
+
+#ans {
+position: absolute;
+     left: 50px;
+     top: 400px;
+     border-style: solid;
+     border-width: 15px;
+     border-image: url(trial/border.png) 50 round;
+     background: transparent;
+     overflow: auto;
+     font-size: 26px;
+     font-family:Papyrus;
+    }
+
+#interact
+{
+    font-size: 26px;
+    font-family:Papyrus;
+}
+
+span
+{ position: relative;
+left:20px;
+top:100px;
+font-weight: bold;
+font-size: 26px;
+font-family:Papyrus;
+}
+#ask
+{    position: relative;
+    left: 0px;
+    top: 0px;
+}
+</style>
+</head>
+<body>
+
+#background {
+ max-width: 100%;
+ height: auto;
+}
+<img id="background" src="background\Hogwarts..jpg" ></img>
+
+<audio id="audio_track" autoplay>
+ <source src="sound/" type="audio/mpeg">
+</audio>
+
+<div class="flipbook-viewport">
+    <div class="container">
+
+
+ <div class="flipbook">
+<div id="page_1" class="hard" style="background-image:url(pages/1.jpg)">
+<img src="anim\eyes.gif" height="500" width="500"></img>
+</div>
+
+<div id="page_2" style="background-image:url(pages/2.jpg)" >
+<img src="C:\Users\pvn kartik\Desktop\BOOKS\C\rain.gif" height="300" width="300" onclick="ask_function()"></img>
+</div>
+<div id="page_3" style="background-image:url(pages/3.jpg)"  onmouseover="background_changer_3(this)">
+<img id="bird_1" src="anim/bird.gif" width="400px" hieght="400px"></img>
+<img id="bird_2" src="anim/bird.gif" width="400px" hieght="400px"></img>
+
+</div>
+
+ <div id="page_4" style="background-image:url(pages/4.jpg)"></div>
+
+<div id="page_r" style="background-image:url(pages/blank.jpg)" >
+
+<span id="interact"></span>
+<img src="effects/swear.gif"  height="250" width="500" id="ask" onclick="ask_function()"></img>
+<script type="text/javascript">
+sessionStorage.setItem("index", "NULL");
+sessionStorage.setItem("p","go");
+sessionStorage.setItem("answer","NULL");   
+function ask_function()
+{ if(document.getElementById("interact").id)
+     document.getElementById("ask").src="effects/ask.gif";
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",process);
+}
+function process() {
+     if((event.key == "Enter") && (!(document.getElementById("ans").value == "yes")))
+     {  document.getElementById("interact").innerHTML = " Well , Hello there " + document.getElementById("ans").value;
+        document.getElementById("ask").src="effects/rain.gif";
+        setTimeout(process_1, 1000);
+     }
+
+}
+function process_1() {
+ var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+document.getElementById("interact").innerHTML ="";
+document.getElementById("ask").src="effects/hello.gif";
+    setTimeout(process_3,1000);
+}
+function process_2() {
+  if((document.getElementById("ans").value == "yes") && (event.key== "Enter"))
+ { document.getElementById("ask").src="effects/rain.gif";
+  document.getElementById("interact").innerHTML="Great!..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+  setTimeout(process_4,1000);
+ }
+ else if ((document.getElementById("ans").value == "no") && (event.key== "Enter"))
+ { document.getElementById("interact").innerHTML ="Well you were a muggle after all!";
+   var element = document.getElementById("ans");
+     element.parentNode.removeChild(element);
+ }
+
+}
+
+function process_3() {
+document.getElementById("ask").src="effects/ques.gif";
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",process_2);
+}
+
+
+function process_4() {
+document.getElementById("interact").innerHTML = Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_1);
+}
+function Ques_1() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(Ques_2,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function Ques_2()
+{document.getElementById("interact").innerHTML = Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_2_ans); 
+}
+function Ques_2_ans() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(Ques_3,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function Ques_3()
+{ document.getElementById("interact").innerHTML =Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_3_ans);
+}
+function Ques_3_ans() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(effects,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function effects() {
+sessionStorage.setItem("p","po");
+document.getElementById("interact").innerHTML="";
+document.getElementById("ask").style.top="170px";
+document.getElementById("ask").src="effects/presents.gif";
+}
+
+function Question_Bank( p , r) {
+var temp;
+var i;
+if(p =="ques")
+i=getRandomIntInclusive(0,14);
+else if(p =="ans")
+i=r;
+
+switch (i) {
+    case 0:
+        sessionStorage.setItem("index","0");
+        sessionStorage.setItem("answer","hagrid");    
+        if(p=="ques")
+        temp = "Who led the trail to spiders in my Second Year";
+        break;
+    case 1:
+        sessionStorage.setItem("index","1");
+        sessionStorage.setItem("answer","harry potter");            
+        if(p=="ques")
+        temp = "Whom did the Elder Wand actually Belong to";
+        break;
+    case 2:
+        sessionStorage.setItem("index","2");
+        sessionStorage.setItem("answer","peter");
+        if(p=="ques")
+        temp = "Who betrayed my parents , just want to know my first name , I am glad he is dead now!!";                    
+        break;
+    case 3:
+        sessionStorage.setItem("index","3");
+        sessionStorage.setItem("answer","3");            
+        if(p =="ques")
+        temp = "When me and Hermione use the Time-Turner to save Sirius in The Prisoner of Azkaban, how many times does Hermione turn it?";
+         break;
+    case 4:
+        sessionStorage.setItem("index","4");
+        sessionStorage.setItem("answer","swedish shot snout");            
+        if(p == "ques")
+        temp = "Which dragon does Cedric Diggory face in the first test during The Goblet of Fire?";
+        break;
+    case 5:
+        sessionStorage.setItem("index","5");
+        sessionStorage.setItem("answer","3");                    
+        if(p== "ques")
+        temp = "In which year I lost Quiditch match";
+        break;
+    case  6:
+        sessionStorage.setItem("index","6");
+          sessionStorage.setItem("answer","troll");            
+        if(p =="ques")
+        temp = "From whom did me and ron save Hermoine during the first year in the Girls Toilet ?";
+        break;
+    case 7:
+        sessionStorage.setItem("index","7");
+        sessionStorage.setItem("answer","ireland");
+        if(p =="ques")
+        temp = "Who won the quiditch world cup finals during my fourth year";
+        break;
+    case 8:
+        sessionStorage.setItem("index","8");
+        sessionStorage.setItem("answer","firebolt");            
+        if(p =="ques")
+        temp = "My broom's model name from my third year onwards?";
+        break;
+    case 9:
+        sessionStorage.setItem("index","9");
+        sessionStorage.setItem("answer","auror");                     
+        if(p =="ques")
+        temp = "Now after Hogwarts,what post am I working as now?";
+        break;
+    case 10:
+       sessionStorage.setItem("index","10");         
+        sessionStorage.setItem("answer","werewolf");            
+        if(p== "ques")
+        temp = "What is lupin's secret";
+        break;
+    case  11:
+        sessionStorage.setItem("index","11"); 
+        sessionStorage.setItem("answer","cho");                    
+        if(p =="ques")
+        temp = "Who was my crush in fifth year ?";
+        break;
+    case 12:
+        sessionStorage.setItem("index","12");
+        sessionStorage.setItem("answer","hufflepuff");            
+        if(p =="ques")
+        temp = "Which house I played against in my third year";
+        break;
+    case  13:
+         sessionStorage.setItem("index","13");
+         sessionStorage.setItem("answer","snape");            
+         if(p =="ques")
+         temp = "whose potion's book was I actaully using in my sixth year ";
+         break;     
+    case 14:
+        sessionStorage.setItem("index","10");
+        sessionStorage.setItem("answer","aberforth");            
+        if(p =="ques")
+        temp = "who is albus dumbeldore's brother";
+        break;
+}
+if(p == "ques")
+return temp;
+}
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+</script>
+</div>
+
+<div id="page_5" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_5").style.backgroundImage="url('pages/5.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_6"  style="background-image:url(pages/blank.jpg)" >
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_6").style.backgroundImage="url('pages/6.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_7" style="background-image:url(pages/blank.jpg)"> <video poster = "C:\Users\pvn kartik\Desktop\BOOKS\C\rain.gif"  align="top|middle" width="250" height="250" onclick="myFunction()" id="demo">
+  <source src="videos\acromantula.mp4" type="video/mp4">
+</video>
+<script>
+function myFunction() {
+var elem=document.getElementById("demo");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+          elem.webkitRequestFullScreen();
+}
+
+
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_7").style.backgroundImage="url('pages/7.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div  id="page_8" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_8").style.backgroundImage="url('pages/8.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_9" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_9").style.backgroundImage="url('pages/9.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_10" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_10").style.backgroundImage="url('pages/10.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_11" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_11").style.backgroundImage="url('pages/11.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+<div id="page_12" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_12").style.backgroundImage="url('pages/12.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_13" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_13").style.backgroundImage="url('pages/13.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_14" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_14(this)">
+<script>
+function background_changer_14() {
+   if(document.getElementById("page_14").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_14").style.backgroundImage="url('pages/14.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_15" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_15(this)">
+<script>
+function background_changer_15() {
+   if(document.getElementById("page_15").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_15").style.backgroundImage="url('pages/15.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_16" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_16(this)">
+<script>
+function background_changer_16() {
+   if(document.getElementById("page_16").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_16").style.backgroundImage="url('pages/16.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_17" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_17(this)">
+<script>
+function background_changer_17() {
+   if(document.getElementById("page_17").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_17").style.backgroundImage="url('pages/17.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_18" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_18(this)">
+<script>
+function background_changer_18() {
+   if(document.getElementById("page_18").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_18").style.backgroundImage="url('pages/18.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_19" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_19(this)">
+<script>
+function background_changer_19() {
+   if(document.getElementById("page_19").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_19").style.backgroundImage="url('pages/19.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_20" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_20(this)">
+<script>
+function background_changer_20() {
+   if(document.getElementById("page_20").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_20").style.backgroundImage="url('pages/20.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_21" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_21(this)">
+<script>
+function background_changer_21() {
+   if(document.getElementById("page_21").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_21").style.backgroundImage="url('pages/21.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_22" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_22(this)">
+<script>
+function background_changer_22() {
+   if(document.getElementById("page_22").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_22").style.backgroundImage="url('pages/22.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_23" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_23(this)">
+<script>
+function background_changer_23() {
+   if(document.getElementById("page_23").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_23").style.backgroundImage="url('pages/23.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_24" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_24(this)">
+<script>
+function background_changer_24() {
+   if(document.getElementById("page_24").id)
+    document.getElementById("background").src="background/Hogwarts..jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_24").style.backgroundImage="url('pages/24.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_25" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_25(this)">
+<script>
+function background_changer_25() {
+   if(document.getElementById("page_25").id)
+    document.getElementById("background").src="background/ForbiddenForest.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_25").style.backgroundImage="url('pages/25.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_26" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_26(this)">
+<script>
+function background_changer_26() {
+   if(document.getElementById("page_26").id)
+    document.getElementById("background").src="background/ForbiddenForest.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_26").style.backgroundImage="url('pages/26.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+
+<div id="page_27" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_27").style.backgroundImage="url('pages/27.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_1" style="background-image:url(pages/blank.jpg)">
+<span id="mem_1" >
+I have a memory I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_1">
+<source src="videos\acromantula.mp4" type="video/mp4">
+</video>
+<input id="ans_1" type="text" onkeypress="test_1()">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_1").style.backgroundImage="url('pages/video1.jpg')";
+  clearInterval(myVar);
+ }
+}
+sessionStorage.setItem('key',"red_1");
+sessionStorage.setItem('lock',"mutex_unlock");
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_1");   
+       if(sessionStorage.getItem('key')=="green_1")
+   {
+       elem.webkitExitFullscreen();
+       
+       elem.load();
+      sessionStorage.setItem('lock',"mutex_unlock");     
+   }
+     if (sessionStorage.getItem('key')=="red_1")
+          {          elem.webkitRequestFullScreen();   
+    elem.play();
+    sessionStorage.setItem('key', "green_1");
+         } 
+}        
+
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_1").value == "yes")) && (sessionStorage.getItem('lock')=="mutex_unlock"))
+     {  document.getElementById("mem_1").innerHTML= "It was my second year , Hagrid was is trouble we needed to do something..";   
+        setTimeout(function(){document.getElementById("mem_1").innerHTML= "Just tap the spiders  and tap back to come out";},3000);
+        document.getElementById("idvid_1").setAttribute('poster','anim/spider_1.gif');     
+        sessionStorage.setItem('lock',"mutex");  
+      }
+}
+</script>
+</div>
+
+<div id="page_28" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_28(this);">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_28").style.backgroundImage="url('pages/28.jpg')";
+  clearInterval(myVar);
+ } 
+}
+function background_changer_28() {
+   if(document.getElementById("page_28").id)
+    document.getElementById("background").src="background/ForbiddenForest.jpg";
+}
+</script>
+</div>
+
+
+<div id="page_29" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_29(this);">
+<script>
+function background_changer_29() {
+   if(document.getElementById("page_29").id)
+    document.getElementById("background").src="background/fireplace.jpg";
+}
+
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_29").style.backgroundImage="url('pages/29.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_29_picture" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_29_pic(this);">
+<script>
+function background_changer_29_pic() {
+   if(document.getElementById("page_29_picture").id)
+    document.getElementById("background").src="background/fireplace.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_29_picture").style.backgroundImage="url('pages/augrey.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_30" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_30").style.backgroundImage="url('pages/30.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+<div id="page_31" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_31").style.backgroundImage="url('pages/31.jpg')";
+  
+    clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+<div id="page_32" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_32(this)">
+<script>
+function background_changer_32() {
+   if(document.getElementById("page_32").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_32").style.backgroundImage="url('pages/32.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_33" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_33(this)">
+<script>
+function background_changer_33() {
+   if(document.getElementById("page_33").id)
+    document.getElementById("background").src="background/chambers.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_33").style.backgroundImage="url('pages/33.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_2" style="background-image:url(pages/blank.jpg)">
+<span id="mem_2" >
+I have a memory I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_2">
+<source src="videos\Basilisk.mp4" type="video/mp4">
+</video>
+<input id="ans_2" type="text" onkeypress="test_1()">
+
+<script type="text/javascript">
+
+var myVar = setInterval(magic, 3000);
+
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_2").style.backgroundImage="url('pages/video2.jpg')";
+  clearInterval(myVar);
+ }
+}
+sessionStorage.setItem('key',"red_2");
+sessionStorage.setItem('lock',"mutex_unlock_2");
+function myfunction_1() {
+var elem=document.getElementById("idvid_2");   
+       if(sessionStorage.getItem('key')=="green_2")
+   {
+       elem.webkitExitFullscreen();
+             elem.load();
+       sessionStorage.setItem('lock',"mutex_unlock_2");
+   }
+     if (sessionStorage.getItem('key')=="red_2")
+          {          elem.webkitRequestFullScreen();   
+    elem.play();
+    sessionStorage.setItem('key', "green_2");
+         } 
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_2").value == "yes")) && (sessionStorage.getItem('lock') == "mutex_unlock_2"))
+     {  document.getElementById("mem_2").innerHTML= "I am taking you to my  second year , I saw the beast with my own eyes..";   
+        setTimeout(function(){document.getElementById("mem_2").innerHTML= "Just tap the basilisk";},3000);
+        document.getElementById("idvid_2").setAttribute('poster','anim/snake.gif');     
+            sessionStorage.setItem('lock',"mutex_lock_2");
+   
+          }
+}
+</script>
+</div>
+
+<div id="page_34" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_34").style.backgroundImage="url('pages/34.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_35" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_35").style.backgroundImage="url('pages/35.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_3" style="background-image:url(pages/blank.jpg)">
+<span id="mem_3" >
+I have a memory I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_3">
+<source src="videos\billywig.mp4" type="video/mp4">
+</video>
+<input id="ans_3" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_3").style.backgroundImage="url('pages/video3.jpg')";
+  clearInterval(myVar);
+ }
+}
+sessionStorage.setItem('key',"red_3");
+sessionStorage.setItem('lock',"mutex_unlock_3");
+function myfunction_1() {
+var elem=document.getElementById("idvid_3");   
+       if(sessionStorage.getItem('key')=="green_3")
+   {
+       elem.webkitExitFullscreen();
+       sessionStorage.setItem('lock',"mutex_unlock_3"); 
+       elem.load();
+   }
+     if (sessionStorage.getItem('key')=="red_3")
+          {          elem.webkitRequestFullScreen();   
+                     elem.play();
+                     sessionStorage.setItem('key', "green_3");
+          } 
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_3").value == "yes")) && (sessionStorage.getItem('lock')=="mutex_unlock_3"))
+     {  document.getElementById("mem_3").innerHTML= "This happened when the author's beasts let loose";   
+        setTimeout(function(){document.getElementById("mem_3").innerHTML= "Just tap the insects and tap back to come out";},2000);
+        document.getElementById("idvid_3").setAttribute('poster','anim/moth.gif');     
+        sessionStorage.setItem('lock',"mutex_lock_3");  
+        }
+}
+</script>
+</div>
+
+
+
+<div id="page_36" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_36(this)">
+<script>
+function background_changer_36() {
+   if(document.getElementById("page_36").id)
+    document.getElementById("background").src="background/australian.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_36").style.backgroundImage="url('pages/36.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_37" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_37(this)">
+<script>
+function background_changer_37() {
+   if(document.getElementById("page_37").id)
+    document.getElementById("background").src="background/scandinavia.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_37").style.backgroundImage="url('pages/37.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+
+<div id="video_4" style="background-image:url(pages/blank.jpg)">
+<span id="mem_4" >
+This is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_4">
+<source src="videos\bowtruckle.mp4" type="video/mp4">
+</video>
+<input id="ans_4" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_4").style.backgroundImage="url('pages/video4.jpg')";
+  clearInterval(myVar);
+ }
+}
+sessionStorage.setItem('lock',"mutex_unlock_4");
+sessionStorage.setItem('key',"red_4");
+function myfunction_1() {
+var elem=document.getElementById("idvid_4");   
+       if(sessionStorage.getItem('key')=="green_4")
+   {
+       elem.webkitExitFullscreen();
+       sessionStorage.setItem('lock',"mutex_unlock_4");
+       elem.load();
+   }
+     if (sessionStorage.getItem('key')=="red_4")
+          {          elem.webkitRequestFullScreen();   
+           elem.play();
+             sessionStorage.setItem('key', "green_4");
+         } 
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_4").value == "yes")) && (sessionStorage.getItem('lock')=="mutex_unlock_4"))
+     {  document.getElementById("mem_4").innerHTML= "this happened when the author lost his beasts";   
+        setTimeout(function(){document.getElementById("mem_4").innerHTML= "Just tap the insects";},3000);
+        document.getElementById("idvid_4").setAttribute('poster','anim/insect.gif');     
+        sessionStorage.setItem('lock',"mutex_lock_4");
+     }
+}
+</script>
+</div>
+
+
+
+
+
+
+ <div style="background-image:url(pages/blank.jpg)">
+<script>
+function background_changer_38() {
+   if(document.getElementById("page_38").id)
+    document.getElementById("background").src="background/scandinavia.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_38").style.backgroundImage="url('pages/38.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_39" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_39(this)">
+<script>
+function background_changer_39() {
+   if(document.getElementById("page_39").id)
+    document.getElementById("background").src="background/old_house.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_39").style.backgroundImage="url('pages/39.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_41" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_41(this)">
+<script>
+function background_changer_41() {
+   if(document.getElementById("page_41").id)
+    document.getElementById("background").src="background/centaur.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_41").style.backgroundImage="url('pages/41.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_42" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_42(this)">
+<script>
+function background_changer_42() {
+   if(document.getElementById("page_42").id)
+    document.getElementById("background").src="background/centaur.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_42").style.backgroundImage="url('pages/42.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+
+
+<div id="video_5" style="background-image:url(pages/blank.jpg)">
+<span id="mem_5" >
+I have a memory I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_5">
+<source src="videos\centaur.mp4" type="video/mp4">
+</video>
+<input id="ans_5" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_5").style.backgroundImage="url('pages/video5.jpg')";
+  clearInterval(myVar);
+ }
+}
+sessionStorage.setItem('lock',"mutex_unlock_5");
+sessionStorage.setItem('key',"red_5");
+function myfunction_1() {
+var elem=document.getElementById("idvid_5");   
+       if(sessionStorage.getItem('key')=="green_5")
+   {
+       elem.webkitExitFullscreen();
+       sessionStorage.setItem('lock',"mutex_unlock_5");
+       elem.load();
+   }
+     if (sessionStorage.getItem('key')=="red_5")
+          {          elem.webkitRequestFullScreen();   
+           elem.play();
+             sessionStorage.setItem('key', "green_5");
+         } 
+}
+
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_5").value == "yes")) && (sessionStorage.getItem('lock')=="mutex_unlock_5"))
+     {  document.getElementById("mem_5").innerHTML= "this is when I saw voldomorth the first time!";   
+        setTimeout(function(){document.getElementById("mem_5").innerHTML= "Just tap the";},3000);
+        document.getElementById("idvid_5").setAttribute('poster','anim/centaur.gif');     
+        sessionStorage.setItem('lock',"mutex_lock_5"); 
+        }
+}
+</script>
+</div>
+
+
+<div id="page_43" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_43(this)">
+<script>
+function background_changer_43() {
+   if(document.getElementById("page_43").id)
+    document.getElementById("background").src="background/chimera.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_43").style.backgroundImage="url('pages/43.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_44" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_44(this)">
+<script>
+function background_changer_44() {
+   if(document.getElementById("page_44").id)
+    document.getElementById("background").src="background/old_house.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_44").style.backgroundImage="url('pages/44.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_45" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_45").style.backgroundImage="url('pages/45.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+
+</div>
+
+<div id="page_46" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_46(this)">
+<script>
+function background_changer_46() {
+   if(document.getElementById("page_46").id)
+    document.getElementById("background").src="background/south_america.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_46").style.backgroundImage="url('pages/46.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_47" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_47").style.backgroundImage="url('pages/47.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_48" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_48(this)">
+<script>
+function background_changer_48() {
+   if(document.getElementById("page_48").id)
+    document.getElementById("background").src="background/southern_england.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_48").style.backgroundImage="url('pages/48.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_49" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_49").style.backgroundImage="url('pages/49.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_50" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_50").style.backgroundImage="url('pages/50.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_51" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_51(this)">
+<script>
+function background_changer_51() {
+   if(document.getElementById("page_51").id)
+    document.getElementById("background").src="background/gorrilla.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_51").style.backgroundImage="url('pages/51.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_6" style="background-image:url(pages/blank.jpg)">
+<span id="mem_6" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="150" height="150"  id="idvid_6">
+<source src="videos\demiguise.mp4" type="video/mp4">
+</video>
+<input id="ans_6" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_6").style.backgroundImage="url('pages/video6.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+sessionStorage.setItem('lock',"mutex_unlock_6");
+sessionStorage.setItem('key',"red_6");
+function myfunction_1() {
+var elem=document.getElementById("idvid_6");   
+       if(sessionStorage.getItem('key')=="green_6")
+   {
+       elem.webkitExitFullscreen();
+       sessionStorage.setItem('lock',"mutex_unlock_6");
+       elem.load();
+   }
+     if (sessionStorage.getItem('key')=="red_6")
+          {          elem.webkitRequestFullScreen();   
+           elem.play();
+             sessionStorage.setItem('key', "green_6");
+         } 
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_6").value == "yes")) && (sessionStorage.getItem('lock')=="mutex_unlock_6"))
+     {  document.getElementById("mem_6").innerHTML= "this is one of the beasts that got lost , perhaps the toughest one to catch!";   
+        setTimeout(function(){document.getElementById("mem_6").innerHTML= "Just tap the gorilla";},3000);
+        document.getElementById("idvid_6").setAttribute('poster','anim/gorilla.gif');     
+        sessionStorage.setItem('lock',"mutex_lock_6");   
+        }
+}
+</script>
+</div>
+
+<div id="page_52" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_52").style.backgroundImage="url('pages/52.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_53" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_53(this)">
+<script>
+function background_changer_53() {
+   if(document.getElementById("page_53").id)
+    document.getElementById("background").src="background/mauritius.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_53").style.backgroundImage="url('pages/53.jpg')";
+  clearInterval(myVar);
+ } 
+}
+
+</script>
+</div>
+
+<div id="video_7" style="background-image:url(pages/blank.jpg)">
+<span id="mem_7" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_7">
+<source src="videos\diricrwal.mp4" type="video/mp4">
+</video>
+<input id="ans_7" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_7").style.backgroundImage="url('pages/video7.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_7");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_7").innerHTML= "this is the author's memory";
+document.getElementById("idvid_7").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_7");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_7");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_7").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_7").value == "yes")))
+     {  document.getElementById("mem_7").innerHTML= "this is a magical bird";   
+        setTimeout(function(){document.getElementById("mem_7").innerHTML= "Just tap the bird";},3000);
+        document.getElementById("idvid_7").setAttribute('poster','anim/dodo.gif');     
+        var element = document.getElementById("ans_7");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_54" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_54").style.backgroundImage="url('pages/54.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_55" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_55(this)">
+<script>
+function background_changer_55() {
+   if(document.getElementById("page_55").id)
+    document.getElementById("background").src="background/pixies.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_55").style.backgroundImage="url('pages/55.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+<div id="video_8" style="background-image:url(pages/blank.jpg)">
+<span id="mem_8" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_8">
+<source src="videos\doxy.mp4" type="video/mp4">
+</video>
+<input id="ans_8" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_8").style.backgroundImage="url('pages/video8.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_8");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_8").innerHTML= "this is the author's memory";
+document.getElementById("idvid_8").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_8");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_8");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_8").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_8").value == "yes")))
+     {  document.getElementById("mem_8").innerHTML= "this is an insect perhaps similar to the pixy";   
+        setTimeout(function(){document.getElementById("mem_8").innerHTML= "Just tap the insects";},3000);
+        document.getElementById("idvid_8").setAttribute('poster','anim/insect.gif');     
+        var element = document.getElementById("ans_8");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_56" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_56").style.backgroundImage="url('pages/56.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+
+</div>
+
+<div id="page_57" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_57(this)">
+<script>
+function background_changer_57() {
+   if(document.getElementById("page_57").id)
+    document.getElementById("background").src="background/dragon.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_57").style.backgroundImage="url('pages/57.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_58" style="background-image:url(pages/blank.jpg)">
+<script>
+function background_changer_58() {
+   if(document.getElementById("page_58").id)
+    document.getElementById("background").src="background/dragon.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_58").style.backgroundImage="url('pages/58.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+ <div id="page_59" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_59").style.backgroundImage="url('pages/59.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_60" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_60").style.backgroundImage="url('pages/60.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_61" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_61").style.backgroundImage="url('pages/61.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_62" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_62").style.backgroundImage="url('pages/62.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_63" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_63").style.backgroundImage="url('pages/63.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_64" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_64").style.backgroundImage="url('pages/64.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_65" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_65").style.backgroundImage="url('pages/65.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_66" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_66").style.backgroundImage="url('pages/66.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_67" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_67").style.backgroundImage="url('pages/67.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_9" style="background-image:url(pages/blank.jpg)">
+<span id="mem_9" >
+I have a memory can I show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_9">
+<source src="videos\horntail.mp4" type="video/mp4">
+</video>
+<input id="ans_9" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_9").style.backgroundImage="url('pages/video9.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_9");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_9").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_9").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_9");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_9");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_9").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_9").value == "yes")))
+     {  document.getElementById("mem_9").innerHTML= "Let me take you back to the fourth year at hogwarts,DRAGONS!";   
+        setTimeout(function(){document.getElementById("mem_9").innerHTML= "Just tap the dragon";},3000);
+        document.getElementById("idvid_9").setAttribute('poster','anim/dragon.gif');     
+        var element = document.getElementById("ans_9");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_68" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_68").style.backgroundImage="url('pages/68.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_69" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_69").style.backgroundImage="url('pages/69.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_10" style="background-image:url(pages/blank.jpg)">
+<span id="mem_10" >
+I have a memory can I show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_10">
+<source src="videos\ridgeback.mp4" type="video/mp4">
+</video>
+<input id="ans_10" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_10").style.backgroundImage="url('pages/video10.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_10");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_10").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_10").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_10");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_10");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_10").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_10").value == "yes")))
+     {  document.getElementById("mem_10").innerHTML= "go we to my first year at hogwarts , first time I saw a dragon";   
+        setTimeout(function(){document.getElementById("mem_10").innerHTML= "Just tap the dragon";},3000);
+        document.getElementById("idvid_10").setAttribute('poster','anim/ridgeback.gif');     
+        var element = document.getElementById("ans_10");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_70" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_70").style.backgroundImage="url('pages/70.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_71" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_71").style.backgroundImage="url('pages/71.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_71").style.backgroundImage="url('pages/71.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_72" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_72").style.backgroundImage="url('pages/72.jpg')";
+  clearInterval(myVar);
+ } 
+}var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_72").style.backgroundImage="url('pages/72.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_73" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_73").style.backgroundImage="url('pages/73.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_73").style.backgroundImage="url('pages/73.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script></div>
+
+<div id="page_74" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_74").style.backgroundImage="url('pages/74.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_74").style.backgroundImage="url('pages/74.jpg')";
+  clearInterval(myVar);
+ } 
+}
+
+</script>
+</div>
+
+<div id="page_75" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_75").style.backgroundImage="url('pages/75.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_75").style.backgroundImage="url('pages/75.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_11" style="background-image:url(pages/blank.jpg)">
+<span id="mem_11" >
+I have a memory can I show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_11">
+<source src="videos\ridgeback.mp4" type="video/mp4">
+</video>
+<input id="ans_11" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_11").style.backgroundImage="url('pages/video11.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_11");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_11").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_11").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_11");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_11");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_11").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_11").value == "yes")))
+     {  document.getElementById("mem_11").innerHTML= "my first bank robery";   
+        setTimeout(function(){document.getElementById("mem_11").innerHTML= "Just tap the dragon";},3000);
+        document.getElementById("idvid_11").setAttribute('poster','anim/ironbelly.gif');     
+        var element = document.getElementById("ans_11");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_76" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_76(this)">
+<script>
+function background_changer_76() {
+   if(document.getElementById("page_76").id)
+    document.getElementById("background").src="background/dragon.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_76").style.backgroundImage="url('pages/76.jpg')";
+  clearInterval(myVar);
+ } 
+}
+
+</script>
+</div>
+
+<div id="page_77" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_77(this)">
+<script>
+function background_changer_77() {
+   if(document.getElementById("page_77").id)
+    document.getElementById("background").src="background/swamps.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_77").style.backgroundImage="url('pages/77.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_12" style="background-image:url(pages/blank.jpg)">
+<span id="mem_12" >
+I have a memory can I show you , the closest I can get
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_12">
+<source src="videos\mandrake.mp4" type="video/mp4">
+</video>
+<input id="ans_12" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_12").style.backgroundImage="url('pages/video12.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_12");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_12").innerHTML= "I have a memory I can show you , the closest I can get";
+document.getElementById("idvid_12").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_12");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_12");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_12").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_12").value == "yes")))
+     {  document.getElementById("mem_12").innerHTML= "this is the main diet of the dubog , we are goign to my second year at college";   
+        setTimeout(function(){document.getElementById("mem_11").innerHTML= "Just tap the croc";},3000);
+        document.getElementById("idvid_11").setAttribute('poster','anim/crocodile.gif');     
+        var element = document.getElementById("ans_12");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_78" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_78").style.backgroundImage="url('pages/78.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_79" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_79(this)">
+<script>
+function background_changer_79() {
+   if(document.getElementById("page_79").id)
+    document.getElementById("background").src="background/dark_forest.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_79").style.backgroundImage="url('pages/79.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_80" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_80").style.backgroundImage="url('pages/80.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_80").style.backgroundImage="url('pages/80.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_81" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_81(this)">
+<script>
+function background_changer_81() {
+   if(document.getElementById("page_81").id)
+    document.getElementById("background").src="background/savana.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_81").style.backgroundImage="url('pages/81.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_13" style="background-image:url(pages/blank.jpg)">
+<span id="mem_13" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_13">
+<source src="videos\rhino.mp4" type="video/mp4">
+</video>
+<input id="ans_13" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_13").style.backgroundImage="url('pages/video13.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_13");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_13").innerHTML= "this is the author's memory";
+document.getElementById("idvid_13").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_13");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_13");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_13").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_13").value == "yes")))
+     {  document.getElementById("mem_13").innerHTML= "this is one of the animals that were lost";   
+        setTimeout(function(){document.getElementById("mem_13").innerHTML= "Just tap the rhino";},3000);
+        document.getElementById("idvid_11").setAttribute('poster','anim/rhino.gif');     
+        var element = document.getElementById("ans_13");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_82" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_82").style.backgroundImage="url('pages/82.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_82").style.backgroundImage="url('pages/82.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_83" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_83(this)">
+<script>
+function background_changer_83() {
+   if(document.getElementById("page_83").id)
+    document.getElementById("background").src="background/woodland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_83").style.backgroundImage="url('pages/83.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_84" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_84").style.backgroundImage="url('pages/84.jpg')";
+  clearInterval(myVar);
+ } 
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_84").style.backgroundImage="url('pages/84.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script></div>
+
+<div id="page_85" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_85(this)">
+<script>
+function background_changer_85() {
+   if(document.getElementById("page_85").id)
+    document.getElementById("background").src="background/maze.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_85").style.backgroundImage="url('pages/85.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_14" style="background-image:url(pages/blank.jpg)">
+<span id="mem_14" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_14">
+<source src="videos\maze.mp4" type="video/mp4">
+</video>
+<input id="ans_14" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_14").style.backgroundImage="url('pages/video14.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_14");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_14").innerHTML= "this is the author's memory";
+document.getElementById("idvid_14").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_14");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_14");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_14").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_14").value == "yes")))
+     {  document.getElementById("mem_14").innerHTML= "I fought these beasts in my last round of the triwizrd cup in the maze";   
+        setTimeout(function(){document.getElementById("mem_14").innerHTML= "Just tap the cup";},3000);
+        document.getElementById("idvid_14").setAttribute('poster','anim/cup.gif');     
+        var element = document.getElementById("ans_14");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_86" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_86").style.backgroundImage="url('pages/86.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_87" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_87(this)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_87").style.backgroundImage="url('pages/87.jpg')";
+  clearInterval(myVar);
+ } 
+}
+function background_changer_87() {
+   if(document.getElementById("page_87").id)
+    document.getElementById("background").src="background/african_trees.jpg";
+}
+</script>
+</div>
+
+<div id="page_88" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_88").style.backgroundImage="url('pages/88.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_89" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_89(this)">
+<script>
+function background_changer_89() {
+   if(document.getElementById("page_89").id)
+    document.getElementById("background").src="background/old_house.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_89").style.backgroundImage="url('pages/89.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_90" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_90").style.backgroundImage="url('pages/90.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_91" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_91(this)">
+<script>
+function background_changer_91() {
+   if(document.getElementById("page_91").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+</script>
+</div>
+
+
+<div id="page_92" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_92").style.backgroundImage="url('pages/92.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_93" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_93(this)">
+<script>
+function background_changer_93() {
+   if(document.getElementById("page_93").id)
+    document.getElementById("background").src="background/mountain_goat.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_93").style.backgroundImage="url('pages/93.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_94" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_94").style.backgroundImage="url('pages/94.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_95" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_95(this)">
+<script>
+function background_changer_95() {
+   if(document.getElementById("page_95").id)
+    document.getElementById("background").src="background/Gryffindor.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_95").style.backgroundImage="url('pages/95.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+
+<div id="page_96" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_96(this)">
+<script>
+function background_changer_96() {
+   if(document.getElementById("page_96").id)
+    document.getElementById("background").src="background/underwater.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_96").style.backgroundImage="url('pages/96.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_15" style="background-image:url(pages/blank.jpg)">
+<span id="mem_15" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_15">
+<source src="videos\grindylow.mp4" type="video/mp4">
+</video>
+<input id="ans_15" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_15").style.backgroundImage="url('pages/video15.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_15");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_15").innerHTML= "I have a memory I cna show you!";
+document.getElementById("idvid_15").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_15");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_15");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_15").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_15").value == "yes")))
+     {  document.getElementById("mem_15").innerHTML= "I have seen in the murky waters during my second challenge at tri wizard cup";   
+        setTimeout(function(){document.getElementById("mem_15").innerHTML= "Just tap the cup";},3000);
+        document.getElementById("idvid_15").setAttribute('poster','anim/cup.gif');     
+        var element = document.getElementById("ans_15");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_97" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_97").style.backgroundImage="url('pages/97.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_98" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_98(this)">
+<script>
+function background_changer_98() {
+   if(document.getElementById("page_98").id)
+    document.getElementById("background").src="background/underwater.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_98").style.backgroundImage="url('pages/98.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+ <div id="page_99" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_99(this)">
+<script>
+function background_changer_99() {
+   if(document.getElementById("page_99").id)
+    document.getElementById("background").src="background/hippogriff.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_99").style.backgroundImage="url('pages/99.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_16" style="background-image:url(pages/blank.jpg)">
+<span id="mem_16" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_16">
+<source src="videos\hippogriff.mp4" type="video/mp4">
+</video>
+<input id="ans_16" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_16").style.backgroundImage="url('pages/video16.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_16");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_16").innerHTML= "I have a memory I can show you!";
+document.getElementById("idvid_16").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_16");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_16");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_16").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_16").value == "yes")))
+     {  document.getElementById("mem_16").innerHTML= "my third year at college hagrids first day as professor!!";   
+        setTimeout(function(){document.getElementById("mem_16").innerHTML= "Just tap the cup";},3000);
+        document.getElementById("idvid_16").setAttribute('poster','anim/hippogriff.gif');     
+        var element = document.getElementById("ans_16");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+ <div id="page_100" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_100(this)">
+<script>
+function background_changer_100() {
+   if(document.getElementById("page_100").id)
+    document.getElementById("background").src="background/hippogriff.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_100").style.backgroundImage="url('pages/100.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_101" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_101(this)">
+<script>
+function background_changer_101() {
+   if(document.getElementById("page_101").id)
+    document.getElementById("background").src="background/scandinavia.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_101").style.backgroundImage="url('pages/101.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_102" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_102").style.backgroundImage="url('pages/102.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_103" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_103(this)">
+<script>
+function background_changer_103() {
+   if(document.getElementById("page_103").id)
+    document.getElementById("background").src="background/foggy_marsh.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_103").style.backgroundImage="url('pages/103.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_104" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_104").style.backgroundImage="url('pages/104.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_105" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_105(this)">
+<script>
+function background_changer_105() {
+   if(document.getElementById("page_105").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_105").style.backgroundImage="url('pages/105.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_106" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_106(this)">
+<script>
+function background_changer_106() {
+   if(document.getElementById("page_106").id)
+    document.getElementById("background").src="background/sunflower.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_106").style.backgroundImage="url('pages/106.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_107" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_107").style.backgroundImage="url('pages/107.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_108" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_108(this)">
+<script>
+function background_changer_108() {
+   if(document.getElementById("page_108").id)
+    document.getElementById("background").src="background/swamps.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_108").style.backgroundImage="url('pages/108.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_109" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_109(this)">
+<script>
+function background_changer_109() {
+   if(document.getElementById("page_109").id)
+    document.getElementById("background").src="background/underwater.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_109").style.backgroundImage="url('pages/109.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_110" style="background-image:url(pages/blank.jpg)"><script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_110").style.backgroundImage="url('pages/110.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script></div>
+
+<div id="page_111" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_111").style.backgroundImage="url('pages/111.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_112" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_112(this)">
+<script>
+function background_changer_112() {
+   if(document.getElementById("page_112").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_112").style.backgroundImage="url('pages/112.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_113" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_113").style.backgroundImage="url('pages/113.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_17" style="background-image:url(pages/blank.jpg)">
+<span id="mem_17" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_17">
+<source src="videos\kneazle.mp4" type="video/mp4">
+</video>
+<input id="ans_17" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_17").style.backgroundImage="url('pages/video17.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_17");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_17").innerHTML= "I have a memory I can show you!";
+document.getElementById("idvid_17").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_17");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_17");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_17").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_17").value == "yes")))
+     {  document.getElementById("mem_17").innerHTML= "first year at hogwarts I was late for the class";   
+        setTimeout(function(){document.getElementById("mem_17").innerHTML= "Just tap the cat ";},3000);
+        document.getElementById("idvid_17").setAttribute('poster','anim/cat.gif');     
+        var element = document.getElementById("ans_17");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_114" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_114").style.backgroundImage="url('pages/114.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_115" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_115(this)">
+<script>
+function background_changer_115() {
+   if(document.getElementById("page_115").id)
+    document.getElementById("background").src="background/irish.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_115").style.backgroundImage="url('pages/115.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_116" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_116").style.backgroundImage="url('pages/116.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_18" style="background-image:url(pages/blank.jpg)">
+<span id="mem_18" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_18">
+<source src="videos\leprechaun.mp4" type="video/mp4">
+</video>
+<input id="ans_18" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_18").style.backgroundImage="url('pages/video18.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_18");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_18").innerHTML= "I have a memory I can show you!";
+document.getElementById("idvid_18").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_18");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_18");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_18").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_18").value == "yes")))
+     {  document.getElementById("mem_18").innerHTML= "this is the closes I can get remember";   
+        setTimeout(function(){document.getElementById("mem_18").innerHTML= "Just tap them ";},3000);
+        document.getElementById("idvid_18").setAttribute('poster','anim/dance.gif');     
+        var element = document.getElementById("ans_18");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_117" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_117(this)">
+<script>
+function background_changer_117() {
+   if(document.getElementById("page_117").id)
+    document.getElementById("background").src="background/dimentor.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_117").style.backgroundImage="url('pages/117.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_19" style="background-image:url(pages/blank.jpg)">
+<span id="mem_19" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_19">
+<source src="videos\dimentor.mp4" type="video/mp4">
+</video>
+<input id="ans_19" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_19").style.backgroundImage="url('pages/video19.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_19");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_19").innerHTML= "I have a memory I can show you!";
+document.getElementById("idvid_19").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_19");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_19");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_19").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_19").value == "yes")))
+     {  document.getElementById("mem_19").innerHTML= "my first encounter with a dimentor in the train!";   
+        setTimeout(function(){document.getElementById("mem_19").innerHTML= "Just the ghost ";},3000);
+        document.getElementById("idvid_19").setAttribute('poster','anim/ghost.gif');     
+        var element = document.getElementById("ans_19");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_118" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_118").style.backgroundImage="url('pages/118.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+ <div id="page_119" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_119").style.backgroundImage="url('pages/119.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_120" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_120").style.backgroundImage="url('pages/120.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_121" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_121(this)">
+<script>
+function background_changer_121() {
+   if(document.getElementById("page_121").id)
+    document.getElementById("background").src="background/beach.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_121").style.backgroundImage="url('pages/121.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_122" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_122").style.backgroundImage="url('pages/122.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_123" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_123(this)">
+<script>
+function background_changer_123() {
+   if(document.getElementById("page_123").id)
+    document.getElementById("background").src="background/dark_forest.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_123").style.backgroundImage="url('pages/123.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_124" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_124(this)">
+<script>
+function background_changer_124() {
+   if(document.getElementById("page_124").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_124").style.backgroundImage="url('pages/124.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_20" style="background-image:url(pages/blank.jpg)">
+<span id="mem_20" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_20">
+<source src="videos\merpeople.mp4" type="video/mp4">
+</video>
+<input id="ans_20" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_20").style.backgroundImage="url('pages/video20.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_20");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_20").innerHTML= "I have a memory I can show you!";
+document.getElementById("idvid_20").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_20");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_20");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_20").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_20").value == "yes")))
+     {  document.getElementById("mem_20").innerHTML= "My second challenge of tri wizrd cup!";   
+        setTimeout(function(){document.getElementById("mem_20").innerHTML= "tap the fishes ";},3000);
+        document.getElementById("idvid_19").setAttribute('poster','anim/fishes.gif');     
+        var element = document.getElementById("ans_20");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+ <div id="page_125" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_125").style.backgroundImage="url('pages/125.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_126" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_126").style.backgroundImage="url('pages/126.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_127" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_127(this)">
+<script>
+function background_changer_127() {
+   if(document.getElementById("page_127").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_127").style.backgroundImage="url('pages/127.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_21" style="background-image:url(pages/blank.jpg)">
+<span id="mem_21" >
+I have a memory I can show you , the closest I can get!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_21">
+<source src="videos\moke.mp4" type="video/mp4">
+</video>
+<input id="ans_21" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_21").style.backgroundImage="url('pages/video21.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_21");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_21").innerHTML= "I have a memory I can show you, the closest I can get!";
+document.getElementById("idvid_21").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_21");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_21");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_21").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_21").value == "yes")))
+     {  document.getElementById("mem_21").innerHTML= "	Hermoines bag , No wonder how much can fit into it !";   
+        setTimeout(function(){document.getElementById("mem_21").innerHTML= "tap the fishes ";},3000);
+        document.getElementById("idvid_21").setAttribute('poster','anim/lizard.gif');     
+        var element = document.getElementById("ans_21");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_128" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_128(this)">
+<script>
+function background_changer_128() {
+   if(document.getElementById("page_128").id)
+    document.getElementById("background").src="background/mooncalf.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_128").style.backgroundImage="url('pages/128.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_129" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_129").style.backgroundImage="url('pages/129.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_130" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_130").style.backgroundImage="url('pages/130.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+<div id="video_22" style="background-image:url(pages/blank.jpg)">
+<span id="mem_22" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_22">
+<source src="videos\murtlap.mp4" type="video/mp4">
+</video>
+<input id="ans_22" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_22").style.backgroundImage="url('pages/video22.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_22");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_22").innerHTML= "this is the author's memory";
+document.getElementById("idvid_22").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_22");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_22");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_22").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_22").value == "yes")))
+     {  document.getElementById("mem_22").innerHTML= "the beast with a nasty bite that muggle will remember it";   
+        setTimeout(function(){document.getElementById("mem_22").innerHTML= "tap the rat ";},3000);
+        document.getElementById("idvid_22").setAttribute('poster','anim/rat.gif');     
+        var element = document.getElementById("ans_22");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_131" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_131(this)">
+<script>
+function background_changer_131() {
+   if(document.getElementById("page_131").id)
+    document.getElementById("background").src="background/swamps.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_131").style.backgroundImage="url('pages/131.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_132" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_132(this)">
+<script>
+function background_changer_132() {
+   if(document.getElementById("page_132").id)
+    document.getElementById("background").src="background/niffler.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_132").style.backgroundImage="url('pages/132.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_23" style="background-image:url(pages/blank.jpg)">
+<span id="mem_23" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_23">
+<source src="videos\niffler.mp4" type="video/mp4">
+</video>
+<input id="ans_23" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_23").style.backgroundImage="url('pages/video23.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_23");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_23").innerHTML= "this is the author's memory";
+document.getElementById("idvid_23").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_23");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_23");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_23").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_23").value == "yes")))
+     {  document.getElementById("mem_23").innerHTML= "the trouble maker";   
+        setTimeout(function(){document.getElementById("mem_23").innerHTML= " tap that mr.mischief";},3000);
+        document.getElementById("idvid_23").setAttribute('poster','anim/niffler.gif');     
+        var element = document.getElementById("ans_23");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_133" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_133(this)">
+<script>
+function background_changer_133() {
+   if(document.getElementById("page_133").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_133").style.backgroundImage="url('pages/133.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_134" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_134").style.backgroundImage="url('pages/134.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_135" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_135").style.backgroundImage="url('pages/135.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_147" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_147(this)">
+<script>
+function background_changer_147() {
+   if(document.getElementById("page_147").id)
+    document.getElementById("background").src="background/lionsden.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_147").style.backgroundImage="url('pages/147.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_24" style="background-image:url(pages/blank.jpg)">
+<span id="mem_24" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_24">
+<source src="videos\nudu.mp4" type="video/mp4">
+</video>
+<input id="ans_24" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_24").style.backgroundImage="url('pages/video24.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_24");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_24").innerHTML= "this is the author's memory";
+document.getElementById("idvid_24").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_24");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_24");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_24").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_24").value == "yes")))
+     {  document.getElementById("mem_24").innerHTML= "the beast capable of killing an entire village with its breath!";   
+        setTimeout(function(){document.getElementById("mem_24").innerHTML= " tap that beast";},3000);
+        document.getElementById("idvid_24").setAttribute('poster','anim/sabertooth.gif');     
+        var element = document.getElementById("ans_24");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+
+<div id="page_148" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_148").style.backgroundImage="url('pages/148.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_149" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_149(this)">
+<script>
+function background_changer_149() {
+   if(document.getElementById("page_149").id)
+    document.getElementById("background").src="background/east_india.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_149").style.backgroundImage="url('pages/149.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_25" style="background-image:url(pages/blank.jpg)">
+<span id="mem_25" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_25">
+<source src="videos\occamy.mp4" type="video/mp4">
+</video>
+<input id="ans_25" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_25").style.backgroundImage="url('pages/video25.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_25");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_25").innerHTML= "this is the author's memory";
+document.getElementById("idvid_25").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_25");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_25");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_25").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_25").value == "yes")))
+     {  document.getElementById("mem_25").innerHTML= "they had a tough time catch this one too";   
+        setTimeout(function(){document.getElementById("mem_25").innerHTML= " tap that beast";},3000);
+        document.getElementById("idvid_25").setAttribute('poster','anim/occamy.png');     
+        var element = document.getElementById("ans_25");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_150" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_150").style.backgroundImage="url('pages/150.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_151" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_151").style.backgroundImage="url('pages/151.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_152" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_152(this)">
+<script>
+function background_changer_152() {
+   if(document.getElementById("page_152").id)
+    document.getElementById("background").src="background/dumbledore.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_152").style.backgroundImage="url('pages/152.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_26" style="background-image:url(pages/blank.jpg)">
+<span id="mem_26" >
+I have a memory , I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_26">
+<source src="videos\occamy.mp4" type="video/mp4">
+</video>
+<input id="ans_26" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_26").style.backgroundImage="url('pages/video26.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_26");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_26").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_26").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_26");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_26");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_26").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_26").value == "yes")))
+     {  document.getElementById("mem_26").innerHTML= "fawkes , he was brilliant , he was better than me , it was because of him I am alive today";   
+        setTimeout(function(){document.getElementById("mem_26").innerHTML= " tap the bird";},3000);
+        document.getElementById("idvid_26").setAttribute('poster','anim/phoenix.gif');     
+        var element = document.getElementById("ans_26");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_153" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_153").style.backgroundImage="url('pages/153.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_154" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_154(this)">
+<script>
+function background_changer_154() {
+   if(document.getElementById("page_154").id)
+    document.getElementById("background").src="background/pixies.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_154").style.backgroundImage="url('pages/154.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_27" style="background-image:url(pages/blank.jpg)">
+<span id="mem_27" >
+I have a memory , I can show you
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_27">
+<source src="videos\pixie.mp4" type="video/mp4">
+</video>
+<input id="ans_27" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_27").style.backgroundImage="url('pages/video27.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_27");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_27").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_27").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_27");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_27");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_27").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_27").value == "yes")))
+     {  document.getElementById("mem_27").innerHTML= "that stupid professor , imposter , if not for hermoine who would have saved us!";   
+        setTimeout(function(){document.getElementById("mem_27").innerHTML= " tap the insects";},3000);
+        document.getElementById("idvid_27").setAttribute('poster','anim/insect.gif');     
+        var element = document.getElementById("ans_27");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+
+<div id="page_155" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_155").style.backgroundImage="url('pages/155.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_156" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_156(this)">
+<script>
+function background_changer_156() {
+   if(document.getElementById("page_156").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_156").style.backgroundImage="url('pages/156.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="page_157" style="background-image:url(pages/blank.jpg)">
+<script>
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_157").style.backgroundImage="url('pages/157.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_158" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_158(this)">
+<script>
+function background_changer_158() {
+   if(document.getElementById("page_158").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_158").style.backgroundImage="url('pages/158.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_159" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_159(this)">
+<script>
+function background_changer_159() {
+   if(document.getElementById("page_159").id)
+    document.getElementById("background").src="background/russia.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_159").style.backgroundImage="url('pages/159.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_160" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_160(this)">
+<script>
+function background_changer_160() {
+   if(document.getElementById("page_160").id)
+    document.getElementById("background").src="background/grassland.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_160").style.backgroundImage="url('pages/160.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_161" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_161(this)">
+<script>
+function background_changer_161() {
+   if(document.getElementById("page_161").id)
+    document.getElementById("background").src="background/grassland.png";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_161").style.backgroundImage="url('pages/161.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_162" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_162(this)">
+<script>
+function background_changer_162() {
+   if(document.getElementById("page_162").id)
+    document.getElementById("background").src="background/puffy_skin.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_162").style.backgroundImage="url('pages/162.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_28" style="background-image:url(pages/blank.jpg)">
+<span id="mem_28" >
+this is gini's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_28">
+<source src="videos\puffiskin.mp4" type="video/mp4">
+</video>
+<input id="ans_28" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_28").style.backgroundImage="url('pages/video28.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_28");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_28").innerHTML= "this is gini's memory";
+document.getElementById("idvid_28").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_28");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_28");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_28").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_28").value == "yes")))
+     {  document.getElementById("mem_28").innerHTML= "isn't she cute";   
+        setTimeout(function(){document.getElementById("mem_28").innerHTML= " tap the insects";},3000);
+        document.getElementById("idvid_28").setAttribute('poster','anim/insect.gif');     
+        var element = document.getElementById("ans_28");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+
+
+<div id="page_163" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_163(this)">
+<script>
+function background_changer_163() {
+   if(document.getElementById("page_163").id)
+    document.getElementById("background").src="background/puffy_skin.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_163").style.backgroundImage="url('pages/163.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_164" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_164(this)">
+<script>
+function background_changer_164() {
+   if(document.getElementById("page_164").id)
+    document.getElementById("background").src="background/northen_scotland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_164").style.backgroundImage="url('pages/164.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_165" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_165(this)">
+<script>
+function background_changer_165() {
+   if(document.getElementById("page_165").id)
+    document.getElementById("background").src="background/northen_scotland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_165").style.backgroundImage="url('pages/165.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_174" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_174(this)">
+<script>
+function background_changer_174() {
+   if(document.getElementById("page_174").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_174").style.backgroundImage="url('pages/174.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_175" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_175(this)">
+<script>
+function background_changer_175() {
+   if(document.getElementById("page_175").id)
+    document.getElementById("background").src="background/battleground.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_175").style.backgroundImage="url('pages/175.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_176" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_176(this)">
+<script>
+function background_changer_176() {
+   if(document.getElementById("page_176").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_176").style.backgroundImage="url('pages/176.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_177" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_177(this)">
+<script>
+function background_changer_177() {
+   if(document.getElementById("page_177").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_177").style.backgroundImage="url('pages/177.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_178" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_178(this)">
+<script>
+function background_changer_178() {
+   if(document.getElementById("page_178").id)
+    document.getElementById("background").src="background/northern-ireland.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_178").style.backgroundImage="url('pages/178.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_179" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_179(this)">
+<script>
+function background_changer_179() {
+   if(document.getElementById("page_179").id)
+    document.getElementById("background").src="background/snake.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_179").style.backgroundImage="url('pages/179.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_29" style="background-image:url(pages/blank.jpg)">
+<span id="mem_29" >
+this is the author's memory
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_29">
+<source src="videos\puffiskin.mp4" type="video/mp4">
+</video>
+<input id="ans_29" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_29").style.backgroundImage="url('pages/video29.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_29");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_29").innerHTML= "this is the author's memory";
+document.getElementById("idvid_29").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_29");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_29");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_29").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_29").value == "yes")))
+     {  document.getElementById("mem_29").innerHTML= "tap the snake";   
+        setTimeout(function(){document.getElementById("mem_29").innerHTML= "quite intresting!";},3000);
+        document.getElementById("idvid_29").setAttribute('poster','anim/runspoor.jpg');     
+        var element = document.getElementById("ans_29");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_180" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_180(this)">
+<script>
+function background_changer_180() {
+   if(document.getElementById("page_180").id)
+    document.getElementById("background").src="background/snake.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_180").style.backgroundImage="url('pages/180.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_181" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_181(this)">
+<script>
+function background_changer_181() {
+   if(document.getElementById("page_181").id)
+    document.getElementById("background").src="background/snake.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_181").style.backgroundImage="url('pages/181.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_182" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_182(this)">
+<script>
+function background_changer_182() {
+   if(document.getElementById("page_182").id)
+    document.getElementById("background").src="background/fireplace.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_182").style.backgroundImage="url('pages/182.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_183" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_183(this)">
+<script>
+function background_changer_183() {
+   if(document.getElementById("page_183").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_183").style.backgroundImage="url('pages/183.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_184" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_184(this)">
+<script>
+function background_changer_184() {
+   if(document.getElementById("page_184").id)
+    document.getElementById("background").src="background/mermaid.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_184").style.backgroundImage="url('pages/184.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_185" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_185(this)">
+<script>
+function background_changer_185() {
+   if(document.getElementById("page_185").id)
+    document.getElementById("background").src="background/underwater.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_185").style.backgroundImage="url('pages/185.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_186" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_186(this)">
+<script>
+function background_changer_186() {
+   if(document.getElementById("page_186").id)
+    document.getElementById("background").src="background/underwater.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_186").style.backgroundImage="url('pages/186.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_188" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_188(this)">
+<script>
+function background_changer_188() {
+   if(document.getElementById("page_188").id)
+    document.getElementById("background").src="background/snidget.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_188").style.backgroundImage="url('pages/188.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_30" style="background-image:url(pages/blank.jpg)">
+<span id="mem_30" >
+I have a memory perhaps the best one!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_30">
+<source src="videos\snidget.mp4" type="video/mp4">
+</video>
+<input id="ans_30" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_30").style.backgroundImage="url('pages/video30.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_30");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_30").innerHTML= "I have a memory perhaps the best one!";
+document.getElementById("idvid_30").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_30");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_30");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_30").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_30").value == "yes")))
+     {  document.getElementById("mem_30").innerHTML= "tap the snidjet";   
+        setTimeout(function(){document.getElementById("mem_29").innerHTML= " fast thing!!";},3000);
+        document.getElementById("idvid_30").setAttribute('poster','anim/snidjet.png');     
+        var element = document.getElementById("ans_30");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_189" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_189(this)">
+<script>
+function background_changer_189() {
+   if(document.getElementById("page_189").id)
+    document.getElementById("background").src="background/desert.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_189").style.backgroundImage="url('pages/189.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_190" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_190(this)">
+<script>
+function background_changer_190() {
+   if(document.getElementById("page_190").id)
+    document.getElementById("background").src="background/desert.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_190").style.backgroundImage="url('pages/190.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_191" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_191(this)">
+<script>
+function background_changer_191() {
+   if(document.getElementById("page_191").id)
+    document.getElementById("background").src="background/demiguise.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_191").style.backgroundImage="url('pages/191.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_192" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_192(this)">
+<script>
+function background_changer_192() {
+   if(document.getElementById("page_192").id)
+    document.getElementById("background").src="background/savana.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_192").style.backgroundImage="url('pages/192.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_193" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_193(this)">
+<script>
+function background_changer_193() {
+   if(document.getElementById("page_193").id)
+    document.getElementById("background").src="background/troll.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_193").style.backgroundImage="url('pages/193.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_31" style="background-image:url(pages/blank.jpg)">
+<span id="mem_31" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_31">
+<source src="videos\troll.mp4" type="video/mp4">
+</video>
+<input id="ans_31" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_31").style.backgroundImage="url('pages/video31.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_31");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_31").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_31").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_31");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_31");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_31").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_31").value == "yes")))
+     {  document.getElementById("mem_31").innerHTML= "tap the troll";   
+        setTimeout(function(){document.getElementById("mem_31").innerHTML= "ugly nasty thing , ron was lucky enough to cast that spell";},3000);
+        document.getElementById("idvid_31").setAttribute('poster','anim/troll.gif');     
+        var element = document.getElementById("ans_31");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_194" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_194(this)">
+<script>
+function background_changer_194() {
+   if(document.getElementById("page_194").id)
+    document.getElementById("background").src="background/troll.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_194").style.backgroundImage="url('pages/194.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_195" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_195(this)">
+<script>
+function background_changer_195() {
+   if(document.getElementById("page_195").id)
+    document.getElementById("background").src="background/troll.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_195").style.backgroundImage="url('pages/195.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_196" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_196(this)">
+<script>
+function background_changer_196() {
+   if(document.getElementById("page_196").id)
+    document.getElementById("background").src="background/black_forest.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_196").style.backgroundImage="url('pages/196.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+
+<div id="video_32" style="background-image:url(pages/blank.jpg)">
+<span id="mem_32" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_32">
+<source src="videos\unicorn.mp4" type="video/mp4">
+</video>
+<input id="ans_32" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_32").style.backgroundImage="url('pages/video32.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_32");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_32").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_32").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_32");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_32");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_32").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_32").value == "yes")))
+     {  document.getElementById("mem_32").innerHTML= "tap the unicorn";   
+        setTimeout(function(){document.getElementById("mem_32").innerHTML= "the worst memory of all the first time I met voldomroth";},3000);
+        document.getElementById("idvid_32").setAttribute('poster','anim/unicorn.gif');     
+        var element = document.getElementById("ans_32");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_197" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_197(this)">
+<script>
+function background_changer_197() {
+   if(document.getElementById("page_197").id)
+    document.getElementById("background").src="background/black_forest.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_197").style.backgroundImage="url('pages/197.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_198" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_198(this)">
+<script>
+function background_changer_198() {
+   if(document.getElementById("page_198").id)
+    document.getElementById("background").src="background/werewolf.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_198").style.backgroundImage="url('pages/198.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="page_199" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_199(this)">
+<script>
+function background_changer_199() {
+   if(document.getElementById("page_199").id)
+    document.getElementById("background").src="background/werewolf.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_199").style.backgroundImage="url('pages/199.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_33" style="background-image:url(pages/blank.jpg)">
+<span id="mem_33" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_33">
+<source src="videos\werewolf.mp4" type="video/mp4">
+</video>
+<input id="ans_33" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_33").style.backgroundImage="url('pages/video33.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_33");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_33").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_33").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_33");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_33");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_33").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_33").value == "yes")))
+     {  document.getElementById("mem_33").innerHTML= "tap the werewolf";   
+        setTimeout(function(){document.getElementById("mem_33").innerHTML= "The day I met my godfather and I learnt the truth, map never lies...";},3000);
+        document.getElementById("idvid_33").setAttribute('poster','anim/werewolf.gif');     
+        var element = document.getElementById("ans_32");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+
+<div id="page_200" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_200(this)">
+<script>
+function background_changer_200() {
+   if(document.getElementById("page_200").id)
+    document.getElementById("background").src="background/threstral.gif";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_200").style.backgroundImage="url('pages/200.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div id="video_34" style="background-image:url(pages/blank.jpg)">
+<span id="mem_34" >
+I have a memory I can show you!
+</span>
+<video poster = "anim/blank.png"  onclick="myfunction_1();" align="top|middle" width="500" height="500"  id="idvid_34">
+<source src="videos\threstral.mp4" type="video/mp4">
+</video>
+<input id="ans_34" type="text" onkeypress="test_1()">
+<script type="text/javascript">
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("video_34").style.backgroundImage="url('pages/video34.jpg')";
+  clearInterval(myVar);
+ }
+}
+
+function myfunction_1() {
+var elem=document.getElementById("idvid_34");
+if(!elem.webkitFullscreenEnabled)
+   {
+       elem.webkitExitFullscreen();
+       elem.load();
+   }
+     if (elem.webkitRequestFullscreen)
+         { elem.webkitRequestFullScreen();
+          }
+setTimeout(function(){ 
+document.getElementById("mem_34").innerHTML= "I have a memory I can show you";
+document.getElementById("idvid_34").setAttribute('poster','anim/blank.jpg');
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans_34");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("video_34");
+enclosing.appendChild(new_input);
+ }, 3000);
+document.getElementById("ans_34").addEventListener("keypress",test_1,false);
+}
+
+function test_1(){
+ if((event.key == "Enter") && ((document.getElementById("ans_34").value == "yes")))
+     {  document.getElementById("mem_34").innerHTML= "tap the threstral";   
+        setTimeout(function(){document.getElementById("mem_34").innerHTML= "the fact of touching these beasts makes me feel sad";},3000);
+        document.getElementById("idvid_34").setAttribute('poster','anim/threstral.gif');     
+        var element = document.getElementById("ans_34");
+         element.parentNode.removeChild(element);
+  
+        }
+}
+</script>
+</div>
+
+<div id="page_201" style="background-image:url(pages/blank.jpg)" onmouseover="background_changer_201(this)">
+<script>
+function background_changer_201() {
+   if(document.getElementById("page_201").id)
+    document.getElementById("background").src="background/yeti.jpg";
+}
+var myVar = setInterval(magic, 3000);
+function magic() {
+var temp=sessionStorage.getItem('p');
+if(temp == "po")
+ { document.getElementById("page_201").style.backgroundImage="url('pages/201.jpg')";
+  clearInterval(myVar);
+ } 
+}
+</script>
+</div>
+
+<div style="background-image:url(pages/202.jpg)"></div>
+<div style="background-image:url(pages/203.jpg)"></div>
+<div style="background-image:url(pages/204.jpg)"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+function loadApp() {	// Create the flipbook
+
+    $('.flipbook').turn({
+            // Width
+
+            width:922,
+
+            // Height
+
+            height:600,
+
+            // Elevation
+
+            elevation: 50,
+
+            // Enable gradients
+
+            gradients: true,
+
+            // Auto center this flipbook
+
+            autoCenter: true
+
+    });
+}
+
+ // Load the HTML4 version if there's not CSS transform
+
+yepnope({
+    test : Modernizr.csstransforms,
+    yep: ['lib/turn.js'],
+    nope: ['lib/turn.html4.min.js'],
+both:['css/basic.css'],
+    complete: loadApp
+});
+
+
+</script>
+</body>
+</html>
