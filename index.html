@@ -48,8 +48,12 @@ font-family:Papyrus;
 </head>
 <body>
 
-<img id="background" src="background\Hogwarts..jpg">
-
+<picture id="background"  style="max-width: 100%;
+    ;max-height: 100%;">
+     <source media="(min-width: 100px)" srcset="background/Hogwarts..jpg" >
+    <source media="(min-width: 100px)" srcset="background/hogwarts_mobile.jpg" >
+  <img src="background/hogwarts_mobile.jpg"  style="width:auto;">
+</picture>
 <audio id="audio_track" loop>
  <source src="sound/arrival.ogg" type="audio/ogg">
  <source src="sound/arrival.mp3" type="audio/mp3">
@@ -61,7 +65,7 @@ font-family:Papyrus;
 <img src="anim\eyes.gif" height="500" width="500"></img>
 </div>
 
-<div id="page_2" style="background-image:url(pages/2.jpg)" >
+<div id="page_2" class="hard" style="background-image:url(pages/2.jpg)" >
 <img id="orc" src="anim/Orchestra_static.png" onclick="audio_test(); "width="300" , height="300"></img>
 <script>
 sessionStorage.setItem("audio_key", "1");
@@ -370,18 +374,18 @@ function background_changer_27() {
 <span id="mem_1">
 I have a memory can I show you , just tap the spiders
 </span>
-<img src="anim/spider_1.gif" onclick="myfunction_1()"></img>
+<img src="anim/spider_1.gif" onclick="myfunction_1()" ></img>
 
 <script>
 sessionStorage.setItem('key',"red_1");
-
-function myfunction_1() {
-
-     if (sessionStorage.getItem('key')=="red_1")
+   
+function myfunction_1() { 
+                          
+    if (sessionStorage.getItem('key')=="red_1")
           { 
            sessionStorage.setItem('key', "green_1");
-           document.getElementById('audio_track').pause();
-           var new_video = document.createElement("VIDEO");
+           document.getElementById('audio_track').pause();          
+            var new_video = document.createElement("VIDEO");
            new_video.setAttribute("id", "idvid_1");
            new_video.setAttribute("type","video/mp4");
            new_video.src="videos/acromantula.mp4";
@@ -390,20 +394,23 @@ function myfunction_1() {
            var elem=document.getElementById("idvid_1");
          elem.webkitRequestFullScreen();   
          elem.play();
+         document.getElementById("idvid_1").addEventListener('click',esc_func); 
          }
-        else {
-           document.getElementById('audio_track').play();
-           sessionStorage.setItem('key',"red_1"); 
-                var elem=document.getElementById("idvid_1");
-             elem.webkitExitFullscreen();
-            elem.parentNode.removeChild(elem);
-              }                
-}        
+     }
+function esc_func() {
+                      if(sessionStorage.getItem("audio_key")=="2") 
+                         document.getElementById('audio_track').play();
+                     var elem=document.getElementById("idvid_1");
+                      sessionStorage.setItem('key', "red_1");
+                      elem.webkitExitFullscreen();
+                      elem.parentNode.removeChild(elem);                        
+                    }     
 </script>
-
 </div>
 
 
+<div id="page_29" style="background-image:url(pages/31.jpg)">
+</div>
 
 <div id="page_29_picture" style="background-image:url(pages/30.jpg)" onmouseover="background_changer_29_pic(this);">
 <script>
