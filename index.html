@@ -1,30 +1,484 @@
-<!DOCTYPE html> 
-<html> 
-<body id="lion"> 
-<p id= "cat"> I am the best </p>
-<video id="dog"  poster = "C:\Users\pvn kartik\Desktop\BOOKS\C\rain.gif" width="1000" hieght="1000" onclick="response()">
-  <source src="C:\Users\pvn kartik\Desktop\temp\Fantastic Beasts and Where to Find Them - Final Trailer [HD].mov" type="video/mp4">
-  <source src="mov_bbb.ogg" type="video/ogg">
-  Your browser does not support HTML5 video.
-</video>
-<script>
-sessionStorage.setItem('key', "red");
- 
-function response() {
-var elem=document.getElementById("dog");
-if(sessionStorage.getItem('key')=="green")
-   {
-       elem.webkitExitFullscreen();
-       elem.load(); 
-   }
-     if (sessionStorage.getItem('key')=="red")
-     {          elem.webkitRequestFullScreen();   
-    elem.play();
-    sessionStorage.setItem('key', "green");
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+<meta name="viewport" content="width = 1050, user-scalable = yes" />
+<script type="text/javascript" src="../../extras/jquery.min.1.7.js"></script>
+<script type="text/javascript" src="../../extras/modernizr.2.5.3.min.js"></script>
 
-    } 
+<style>
+body {
+cursor: url(cursor/wand.png), pointer;
 }
 
+input {
+position: absolute;
+     left: 50px;
+     top: 400px;
+     border-style: solid;
+     border-width: 15px;
+     border-image: url(trial/border.png) 50 round;
+     background: transparent;
+     overflow: auto;
+     font-size: 26px;
+     font-family:Papyrus;
+    }
+#interact
+{
+    font-size: 26px;
+    font-family:Papyrus;
+}
+span
+{ position: relative;
+left:20px;
+top:100px;
+font-weight: bold;
+font-size: 26px;
+font-family:Papyrus;
+}
+#ask
+{    position: relative;
+    left: 0px;
+    top: 0px;
+}
+</style>
+</head>
+<body>
+
+<img id="background" src="background\Hogwarts..jpg">
+
+<audio id="audio_track" loop>
+ <source src="sound/arrival.ogg" type="audio/ogg">
+ <source src="sound/arrival.mp3" type="audio/mp3">
+ </audio>
+<div class="flipbook-viewport">
+ <div class="container">
+ <div class="flipbook">
+<div id="page_1" class="hard" style="background-image:url(pages/1.jpg)">
+<img src="anim\eyes.gif" height="500" width="500"></img>
+</div>
+
+<div id="page_2" style="background-image:url(pages/2.jpg)" >
+<img id="orc" src="anim/Orchestra_static.png" onclick="audio_test(); "width="300" , height="300"></img>
+<script>
+sessionStorage.setItem("audio_key", "1");
+function audio_test(){
+if(sessionStorage.getItem("audio_key")=="1"){
+document.getElementById("orc").src="anim/Orchestra.gif";
+document.getElementById('audio_track').play();
+sessionStorage.setItem("audio_key", "2");
+}
+else if(sessionStorage.getItem("audio_key")=="2") {
+document.getElementById("orc").src="anim/Orchestra_static.png";
+document.getElementById('audio_track').pause();
+sessionStorage.setItem("audio_key", "1");
+}
+}
 </script>
-</body> 
-</html>  
+</img>
+</div>
+
+<div id="page_3" style="background-image:url(pages/3.jpg)"  onmouseover="background_changer_3(this)">
+<img id="bird_1" src="anim/bird.gif" width="400px" hieght="400px">
+<img id="bird_2" src="anim/bird.gif" width="400px" hieght="400px"></img>
+</img>
+
+</div>
+
+ <div id="page_4" style="background-image:url(pages/4.jpg)"></div>
+
+<div id="page_r" style="background-image:url(pages/blank.jpg)" >
+<span id="interact"></span>
+<img src="effects/swear.gif"  height="250" width="500" id="ask" onclick="ask_function()"></img>
+<img src="anim/footsteps.gif" style="position:relative ; top="50px" ; width="300""></img>
+<script type="text/javascript">
+sessionStorage.setItem("index", "NULL");
+sessionStorage.setItem("p","go");
+sessionStorage.setItem("answer","NULL");   
+function ask_function()
+{ if(document.getElementById("interact").id)
+     document.getElementById("ask").src="effects/ask.gif";
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",process);
+}
+function process() {
+     if((event.key == "Enter") && (!(document.getElementById("ans").value == "yes")))
+     {  document.getElementById("interact").innerHTML = " Well , Hello there " + document.getElementById("ans").value;
+        document.getElementById("ask").src="effects/rain.gif";
+        setTimeout(process_1, 2000);
+     }
+
+}
+function process_1() {
+ var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+document.getElementById("interact").innerHTML ="";
+document.getElementById("ask").src="effects/hello.gif";
+    setTimeout(process_3,3000);
+}
+function process_2() {
+  if(((document.getElementById("ans").value == "yes") || (document.getElementById("ans").value == "Yes") || (document.getElementById("ans").value == "YES") ) && (event.key== "Enter"))
+ { document.getElementById("ask").src="effects/rain.gif";
+  document.getElementById("interact").innerHTML="Great!..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+  setTimeout(process_4,2000);
+ }
+ else if ((document.getElementById("ans").value == "no") && (event.key== "Enter"))
+ { document.getElementById("interact").innerHTML ="Well you were a muggle after all!";
+   var element = document.getElementById("ans");
+     element.parentNode.removeChild(element);
+ }
+
+}
+
+function process_3() {
+document.getElementById("ask").src="effects/ques.gif";
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",process_2);
+}
+
+
+function process_4() {
+document.getElementById("interact").innerHTML = Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_1);
+}
+function Ques_1() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(Ques_2,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function Ques_2()
+{document.getElementById("interact").innerHTML = Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_2_ans); 
+}
+function Ques_2_ans() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(Ques_3,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function Ques_3()
+{ document.getElementById("interact").innerHTML =Question_Bank("ques","NULL");
+var new_input = document.createElement("input");
+new_input.setAttribute("id", "ans");
+new_input.setAttribute("type","text");
+var enclosing = document.getElementById("page_r");
+enclosing.appendChild(new_input);
+document.getElementById("ans").addEventListener("keypress",Ques_3_ans);
+}
+function Ques_3_ans() {
+Question_Bank("ans",sessionStorage.getItem('index'));
+if((document.getElementById("ans").value == sessionStorage.getItem('answer')) && (event.key== "Enter")){
+document.getElementById("interact").innerHTML="perfect..";
+  var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+setTimeout(effects,1000);
+}
+else if(event.key== "Enter"){
+document.getElementById("interact").innerHTML="No the ans is " + sessionStorage.getItem('answer') + " try start afresh";
+var element = document.getElementById("ans");
+ element.parentNode.removeChild(element);
+}
+}
+function effects() {
+sessionStorage.setItem("p","po");
+document.getElementById("interact").innerHTML="";
+document.getElementById("ask").style.top="170px";
+document.getElementById("ask").src="effects/presents.gif";
+}
+
+function Question_Bank( p , r) {
+var temp;
+var i;
+if(p =="ques")
+i=getRandomIntInclusive(0,14);
+else if(p =="ans")
+i=r;
+
+switch (i) {
+    case 0:
+        sessionStorage.setItem("index","0");
+        sessionStorage.setItem("answer","hagrid");    
+        if(p=="ques")
+        temp = "Who led the trail to spiders in my Second Year";
+        break;
+    case 1:
+        sessionStorage.setItem("index","1");
+        sessionStorage.setItem("answer","harry potter");            
+        if(p=="ques")
+        temp = "Whom did the Elder Wand actually Belong to";
+        break;
+    case 2:
+        sessionStorage.setItem("index","2");
+        sessionStorage.setItem("answer","peter");
+        if(p=="ques")
+        temp = "Who betrayed my parents , just want to know my first name , I am glad he is dead now!!";                    
+        break;
+    case 3:
+        sessionStorage.setItem("index","3");
+        sessionStorage.setItem("answer","3");            
+        if(p =="ques")
+        temp = "When me and Hermione use the Time-Turner to save Sirius in The Prisoner of Azkaban, how many times does Hermione turn it?";
+         break;
+    case 4:
+        sessionStorage.setItem("index","4");
+        sessionStorage.setItem("answer","swedish shot snout");            
+        if(p == "ques")
+        temp = "Which dragon does Cedric Diggory face in the first test during The Goblet of Fire?";
+        break;
+    case 5:
+        sessionStorage.setItem("index","5");
+        sessionStorage.setItem("answer","3");                    
+        if(p== "ques")
+        temp = "In which year I lost Quiditch match";
+        break;
+    case  6:
+        sessionStorage.setItem("index","6");
+          sessionStorage.setItem("answer","troll");            
+        if(p =="ques")
+        temp = "From whom did me and ron save Hermoine during the first year in the Girls Toilet ?";
+        break;
+    case 7:
+        sessionStorage.setItem("index","7");
+        sessionStorage.setItem("answer","ireland");
+        if(p =="ques")
+        temp = "Who won the quiditch world cup finals during my fourth year";
+        break;
+    case 8:
+        sessionStorage.setItem("index","8");
+        sessionStorage.setItem("answer","firebolt");            
+        if(p =="ques")
+        temp = "My broom's model name from my third year onwards?";
+        break;
+    case 9:
+        sessionStorage.setItem("index","9");
+        sessionStorage.setItem("answer","auror");                     
+        if(p =="ques")
+        temp = "Now after Hogwarts,what post am I working as now?";
+        break;
+    case 10:
+       sessionStorage.setItem("index","10");         
+        sessionStorage.setItem("answer","werewolf");            
+        if(p== "ques")
+        temp = "What is lupin's secret";
+        break;
+    case  11:
+        sessionStorage.setItem("index","11"); 
+        sessionStorage.setItem("answer","cho");                    
+        if(p =="ques")
+        temp = "Who was my crush in fifth year ?";
+        break;
+    case 12:
+        sessionStorage.setItem("index","12");
+        sessionStorage.setItem("answer","hufflepuff");            
+        if(p =="ques")
+        temp = "Which house I played against in my third year";
+        break;
+    case  13:
+         sessionStorage.setItem("index","13");
+         sessionStorage.setItem("answer","snape");            
+         if(p =="ques")
+         temp = "whose potion's book was I actaully using in my sixth year ";
+         break;     
+    case 14:
+        sessionStorage.setItem("index","10");
+        sessionStorage.setItem("answer","aberforth");            
+        if(p =="ques")
+        temp = "who is albus dumbeldore's brother";
+        break;
+}
+if(p == "ques")
+return temp;
+}
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+</script>
+</div>
+
+<div id="page_5" style="background-image:url(pages/5.jpg)">
+</div>
+
+<div id="page_6"  style="background-image:url(pages/6.jpg)" >
+</div>
+
+<div id="page_7" style="background-image:url(pages/7.jpg)"></div>
+
+<div  id="page_8" style="background-image:url(pages/8.jpg)">
+</div>
+
+
+<div id="page_26" style="background-image:url(pages/26.jpg)">
+</div>
+
+
+<div id="page_27" style="background-image:url(pages/27.jpg)" onmouseover="background_changer_27(this);">
+<script type="text/javascript">
+function background_changer_27() {
+   if(document.getElementById("page_27").id)
+    document.getElementById("background").src="background/forbidden_forest.png";
+}
+</script>
+</div>
+
+<div id="page_28" style="background-image:url(pages/28.jpg)">
+<img src="anim/spider_2.gif"></img>
+</div>
+
+<div id="video_1" style="background-image:url(pages/blank.jpg)">
+<span id="mem_1">
+I have a memory can I show you , just tap the spiders
+</span>
+<img src="anim/spider_1.gif" onclick="myfunction_1()"></img>
+
+<script>
+sessionStorage.setItem('key',"red_1");
+
+function myfunction_1() {
+
+     if (sessionStorage.getItem('key')=="red_1")
+          { 
+           sessionStorage.setItem('key', "green_1");
+           document.getElementById('audio_track').pause();
+           var new_video = document.createElement("VIDEO");
+           new_video.setAttribute("id", "idvid_1");
+           new_video.setAttribute("type","video/mp4");
+           new_video.src="videos/acromantula.mp4";
+           var enclosing = document.getElementById("video_1");
+           enclosing.appendChild(new_video);
+           var elem=document.getElementById("idvid_1");
+         elem.webkitRequestFullScreen();   
+         elem.play();
+         }
+        else {
+           document.getElementById('audio_track').play();
+           sessionStorage.setItem('key',"red_1"); 
+                var elem=document.getElementById("idvid_1");
+             elem.webkitExitFullscreen();
+            elem.parentNode.removeChild(elem);
+              }                
+}        
+</script>
+
+</div>
+
+
+
+<div id="page_29_picture" style="background-image:url(pages/30.jpg)" onmouseover="background_changer_29_pic(this);">
+<script>
+function background_changer_29_pic() {
+   if(document.getElementById("page_29_picture").id)
+    document.getElementById("background").src="background/fireplace.jpg";
+}
+</script>
+</div>
+
+
+
+<div id="page_30" style="background-image:url(pages/31.jpg)">
+</div>
+
+<div id="page_31" style="background-image:url(pages/32.jpg)">
+</div>
+
+
+<div id="page_34" style="background-image:url(pages/blank.jpg)">
+</div>
+
+<div id="page_35" style="background-image:url(pages/blank.jpg)">
+</div>
+
+
+
+<div style="background-image:url(pages/202.jpg)"></div>
+<div style="background-image:url(pages/203.jpg)"></div>
+<div style="background-image:url(pages/204.jpg)"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+function loadApp() {	// Create the flipbook
+
+    $('.flipbook').turn({
+            // Width
+
+            width:922,
+
+            // Height
+
+            height:600,
+
+            // Elevation
+
+            elevation: 50,
+
+            // Enable gradients
+
+            gradients: true,
+
+            // Auto center this flipbook
+
+            autoCenter: true
+
+    });
+}
+
+ // Load the HTML4 version if there's not CSS transform
+
+yepnope({
+    test : Modernizr.csstransforms,
+    yep: ['../../lib/turn.js'],
+    nope: ['../../lib/turn.html4.min.js'],
+both:['css/basic.css'],
+    complete: loadApp
+});
+
+
+</script>
+</body>
+</html>
